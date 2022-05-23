@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- For favicon png -->
+		<link rel="shortcut icon" type="image/icon" href="{% static 'assets/logo/favicon.png' %}"/>
+       
+        <!--font-awesome.min.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+
+        <!--linear icon css-->
+		<link rel="stylesheet" href="{% static 'assets/css/linearicons.css' %}">
+
+		<!--animate.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+
+        <!--owl.carousel.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+		<link rel="stylesheet" href="{% static 'assets/css/owl.theme.default.min.css' %}">
+		
+        <!--bootstrap.min.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+		
+		<!-- bootsnav -->
+		<link rel="stylesheet" href="{% static 'assets/css/bootsnav.css' %}" >	
+        
+        <!--style.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        
+        <!--responsive.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+
+</head>
+<body>
+    <section id="newsletter"  class="newsletter">
+        <div class="container">
+            <div class="hm-footer-details">
+                <div class="row">
+                 
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="hm-footer-widget">
+                            <div class="hm-foot-title">
+                                <h4><center> Email Verification </center></h4>
+                            </div><!--/.hm-foot-title-->
+                            <div class="hm-foot-para">
+                               
+                            </div><!--/.hm-foot-para-->
+                            
+                            
+                            <!-- Form Started -->
+                            <p>{{msg}}</p>
+                            <form action="{% url 'otp' %}" method="post">
+                            {% csrf_token %}
+                            <div class="hm-foot-email">
+                                <div class="foot-email-box">
+                                    <input type="text" class="form-control" name="otp" placeholder="Enter OTP" required>
+                                    <br>
+                                    
+                                </div><!--/.foot-email-box-->
+                                <center>
+                                <button class="btn-cart welcome-add-cart" type="submit">
+                                    <b>Verify</b>
+                                </button>
+                                </center>
+                            </div><!--/.hm-foot-email-->
+                            </form>
+                            <!-- Form ended!! -->
+
+
+                        </div><!--/.hm-footer-widget-->
+                    </div><!--/.col-->
+                    <div class="col-md-3">
+                    </div>
+                </div><!--/.row-->
+            </div><!--/.hm-footer-details-->
+
+        </div><!--/.container-->
+
+    </section>
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+        
+        <!--modernizr.min.js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js' %}"></script>
+		
+		<!--bootstrap.min.js-->
+        <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		
+		<!-- bootsnav js -->
+		<script src="{% static 'assets/js/bootsnav.js' %}"></script>
+
+		<!--owl.carousel.js-->
+        <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+		
+        
+        <!--Custom JS-->
+        <script src="{% static 'assets/js/custom.js' %}"></script>
+</body>
+</html>
