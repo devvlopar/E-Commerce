@@ -92,3 +92,7 @@ def logout(request):
         return render(request, 'login.html')
     except:
         return render(request, 'login.html')
+
+def arrival(request):
+
+    return render(request, 'arrivals.html')
