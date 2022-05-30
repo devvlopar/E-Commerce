@@ -191,10 +191,11 @@
        
         <div class="new-arrivals-content">
             <div class="row">
+                {% for single_product in all_products %}
                 <div class="col-md-3 col-sm-4">
                     <div class="single-new-arrival">
                         <div class="single-new-arrival-bg">
-                            <img src="{% static 'assets/images/collection/arrivals1.png' %}" alt="new-arrivals images">
+                            <img src="{{single_product.pic.url}}" alt="new-arrivals images">
                             <div class="single-new-arrival-bg-overlay"></div>
                             <div class="sale bg-1">
                                 <p>sale</p>
@@ -210,10 +211,11 @@
                                 </p>
                             </div>
                         </div>
-                        <h4><a href="#">wooden chair</a></h4>
-                        <p class="arrival-product-price">$65.00</p>
+                        <h4><a href="#">{{single_product.pname}}</a></h4>
+                        <p class="arrival-product-price">${{single_product.price}}</p>
                     </div>
                 </div>
+                {% endfor %}
                 <!-- <div class="col-md-3 col-sm-4">
                     <div class="single-new-arrival">
                         <div class="single-new-arrival-bg">

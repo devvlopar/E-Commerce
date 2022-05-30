@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 
 
 from app_buyer.models import User
+from app_seller.models import Products
 from . import *
 
 # Create your views here.
@@ -94,5 +95,5 @@ def logout(request):
         return render(request, 'login.html')
 
 def arrival(request):
-
-    return render(request, 'arrivals.html')
+    all_products = Products.objects.all()
+    return render(request, 'arrivals.html',{'all_products':all_products})
