@@ -7,11 +7,34 @@ from django.core.mail import send_mail
 from app_seller.models import *
 
 
+
+
+
 # Create your views here.
 def add_product(request):
-    if request.method == 'POST':
-        pass
-    return render(request, 'addproduct.html')
+    try:
+        session_seller = Seller.objects.get(email = request.session['email'])
+        if request.method == 'POST':
+            if request.FILES:
+                Products.objects.create(
+                    pname = request.POST['pname'],
+                    price = request.POST['price'],
+                    pic = request.FILES['pic'],
+                    seller = session_seller
+                )
+                return render(request, 'addproduct.html', {'msg':'Created!!!'})
+            else:
+                Products.objects.create(
+                    pname = request.POST['pname'],
+                    price = request.POST['price'],
+                    seller = session_seller
+                )
+                return render(request, 'addproduct.html', {'msg':'Created!!!'})
+        return render(request, 'addproduct.html')
+    except:
+        return render(request, 'sellerlogin.html')
+
+
 
 def seller_register(request):
     if request.method == 'POST':
@@ -76,7 +99,7 @@ def seller_login(request):
                     return render(request, 'sellerlogin.html',{'msg':'Password Incorrect!!'})
             except:
                 return render(request, 'sellerlogin.html', {'msg':'Email is not Registered!!'})
-    return render(request, 'sellerlogin.html')
+        return render(request, 'sellerlogin.html')
    
 
 
