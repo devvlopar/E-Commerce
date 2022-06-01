@@ -113,7 +113,10 @@
 			  </form>
 			</div>
 			
-			
+			<form method="post" action="{% url 'delete' %}">
+				{% csrf_token %}
+				<input type="submit" value="Submit">
+			</form>
 	
 	
 		<!--welcome-hero start -->

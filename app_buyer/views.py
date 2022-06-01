@@ -97,3 +97,14 @@ def logout(request):
 def arrival(request):
     all_products = Products.objects.all()
     return render(request, 'arrivals.html',{'all_products':all_products})
+
+
+def buyer_profile(request):
+    if request.method == 'POST':
+        session_user = User.objects.get(email = request.session['email'])
+        session_user.fullname = request.POST['fname']
+        session_user.password = request.POST['password']
+        session_user.save()
+        return render(request, 'buyer_profile.html',{'session_user':session_user,'msg':'updated!!!'})
+    session_user = User.objects.get(email = request.session['email'])
+    return render(request, 'buyer_profile.html',{'session_user':session_user})

@@ -114,3 +114,11 @@ def seller_logout(request):
 def arrival(request):
 
     return render(request, 'arrivals.html')
+
+
+def delete(request):
+    if request.method == 'POST':
+        session_seller = Seller.objects.get(email=request.session['email'])
+        session_seller.delete()
+        return render(request, 'sellerregister.html')
+    return render(request, 'addproduct.html')
