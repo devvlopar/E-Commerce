@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 
-from app_buyer.models import User
+from app_buyer.models import Cart, User
 from app_seller.models import Products
 from . import *
 
@@ -49,6 +49,7 @@ def register(request):
                 return render(request, 'register.html',{'msg':'Both passwords are not same!! '})
     else:
         return render(request, 'register.html')
+
 
 
 def otp(request):
@@ -108,3 +109,38 @@ def buyer_profile(request):
         return render(request, 'buyer_profile.html',{'session_user':session_user,'msg':'updated!!!'})
     session_user = User.objects.get(email = request.session['email'])
     return render(request, 'buyer_profile.html',{'session_user':session_user})
+
+
+def add_to_cart(request, pk):
+    session_user=User.objects.get(email=request.session['email'])
+
+    try:
+        cart_obj = Cart.objects.filter(userid = session_user)
+        print(type(cart_obj.orderid))
+        print(cart_obj)
+        oid = cart_obj.orderid
+        pid = Products.objects.get(id=pk)
+        Cart.objects.create(
+            userid=session_user,
+            productid=pid,
+            orderid=oid,
+        )
+        all_products = Products.objects.all()
+        return render(request, 'arrivals.html',{'all_products':all_products})
+    except:
+        oid = randrange(1000,9999)
+        pid = Products.objects.get(id=pk)
+        Cart.objects.create(
+            userid=session_user,
+            productid=pid,
+            orderid=oid,
+        )
+        all_products = Products.objects.all()
+        return render(request, 'arrivals.html',{'all_products':all_products})
+
+
+def cart(request):
+    session_user=User.objects.get(email=request.session['email'])
+    cart_data = Cart.objects.filter(userid = session_user, orderid=1010)
+    print(cart_data)
+    return render(request, 'cart.html',{'cart_data':cart_data}) 
