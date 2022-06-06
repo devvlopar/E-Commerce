@@ -1,6 +1,7 @@
 import email
 from random import randrange
 import re
+from tokenize import single_quoted
 from django.shortcuts import render
 from django.conf import settings
 from django.core.mail import send_mail
@@ -113,27 +114,26 @@ def buyer_profile(request):
 
 def add_to_cart(request, pk):
     session_user=User.objects.get(email=request.session['email'])
-
-    try:
-        cart_obj = Cart.objects.filter(userid = session_user)
-        print(type(cart_obj.orderid))
-        print(cart_obj)
-        oid = cart_obj.orderid
+    global order_id
+    cart_obj = Cart.objects.filter(userid = session_user)
+    if len(cart_obj) != 0:
+        oid = cart_obj.values()
+        order_id = oid[0]['orderid']
         pid = Products.objects.get(id=pk)
         Cart.objects.create(
             userid=session_user,
             productid=pid,
-            orderid=oid,
+            orderid=order_id,
         )
         all_products = Products.objects.all()
         return render(request, 'arrivals.html',{'all_products':all_products})
-    except:
-        oid = randrange(1000,9999)
+    else:
+        order_id = randrange(1000,9999)
         pid = Products.objects.get(id=pk)
         Cart.objects.create(
             userid=session_user,
             productid=pid,
-            orderid=oid,
+            orderid=order_id,
         )
         all_products = Products.objects.all()
         return render(request, 'arrivals.html',{'all_products':all_products})
@@ -141,6 +141,19 @@ def add_to_cart(request, pk):
 
 def cart(request):
     session_user=User.objects.get(email=request.session['email'])
-    cart_data = Cart.objects.filter(userid = session_user, orderid=1010)
+    cart_data = Cart.objects.filter(userid = session_user, orderid=order_id)
     print(cart_data)
     return render(request, 'cart.html',{'cart_data':cart_data}) 
+
+def checkout(request):
+    session_user=User.objects.get(email=request.session['email'])
+    cart_data = Cart.objects.filter(userid = session_user)
+    cart_data = cart_data.values()
+    single_amount = 0
+    for x in cart_data:
+        i=0
+        single_amount += x[i]['orderid']
+        i+=1
+
+    
+    return render(request,'payment.html')
