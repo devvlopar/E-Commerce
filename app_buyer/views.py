@@ -2,7 +2,7 @@ import email
 from random import randrange
 import re
 from tokenize import single_quoted
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.conf import settings
 from django.core.mail import send_mail
 
@@ -78,8 +78,15 @@ def login(request):
                 uid = User.objects.get(email = request.POST['email'])
                 if request.POST['password'] ==  uid.password:
                     request.session['email'] = request.POST['email']
-                    session_user_data = User.objects.get(email = request.session['email'])
-                    return render(request, 'index.html',{'user_data':session_user_data})
+                    session_user = User.objects.get(email = request.session['email'])
+                    cart_obj = Cart.objects.filter(userid = session_user)
+                    global order_id
+                    if len(cart_obj) != 0:
+                        oid = cart_obj.values()
+                        order_id = oid[0]['orderid']
+                    else:
+                        order_id = randrange(1000,9999)
+                    return render(request, 'index.html',{'user_data':session_user})
                 else:
                     return render(request, 'login.html',{'msg':'Password Incorrect!!'})
             except:
@@ -140,10 +147,16 @@ def add_to_cart(request, pk):
 
 
 def cart(request):
-    session_user=User.objects.get(email=request.session['email'])
-    cart_data = Cart.objects.filter(userid = session_user, orderid=order_id)
-    print(cart_data)
-    return render(request, 'cart.html',{'cart_data':cart_data}) 
+    try:
+        session_user=User.objects.get(email=request.session['email'])
+        cart_data = Cart.objects.filter(userid = session_user, orderid=order_id)
+        print(cart_data)
+        return render(request, 'cart.html',{'cart_data':cart_data}) 
+    except NameError:
+        return redirect('login')
+    except KeyError:
+        return redirect('login')
+    
 
 def checkout(request):
     session_user=User.objects.get(email=request.session['email'])
