@@ -121,29 +121,15 @@ def buyer_profile(request):
 
 def add_to_cart(request, pk):
     session_user=User.objects.get(email=request.session['email'])
-    global order_id
-    cart_obj = Cart.objects.filter(userid = session_user)
-    if len(cart_obj) != 0:
-        oid = cart_obj.values()
-        order_id = oid[0]['orderid']
-        pid = Products.objects.get(id=pk)
-        Cart.objects.create(
-            userid=session_user,
-            productid=pid,
-            orderid=order_id,
-        )
-        all_products = Products.objects.all()
-        return render(request, 'arrivals.html',{'all_products':all_products})
-    else:
-        order_id = randrange(1000,9999)
-        pid = Products.objects.get(id=pk)
-        Cart.objects.create(
-            userid=session_user,
-            productid=pid,
-            orderid=order_id,
-        )
-        all_products = Products.objects.all()
-        return render(request, 'arrivals.html',{'all_products':all_products})
+    pid = Products.objects.get(id=pk)
+    Cart.objects.create(
+        userid=session_user,
+        productid=pid,
+        orderid=order_id,
+    )
+    all_products = Products.objects.all()
+    return render(request, 'arrivals.html',{'all_products':all_products})
+    
 
 
 def cart(request):
